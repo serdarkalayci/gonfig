@@ -7,8 +7,10 @@ import (
 	yaml "gopkg.in/yaml.v2"
 )
 
+var myReadFile = os.ReadFile
+
 func readJSON(filePath string) (map[string]interface{}, error) {
-	readBytes, err := os.ReadFile(filePath)
+	readBytes, err := myReadFile(filePath)
 	if err != nil {
 		return nil, err
 	}
@@ -21,7 +23,7 @@ func readJSON(filePath string) (map[string]interface{}, error) {
 }
 
 func readYaml(filePath string) (map[string]interface{}, error) {
-	readBytes, err := os.ReadFile(filePath)
+	readBytes, err := myReadFile(filePath)
 	if err != nil {
 		return nil, err
 	}

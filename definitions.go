@@ -6,8 +6,6 @@ type SourceType string
 const (
 	// Env sourcetype is used for reading from environment settings
 	Env SourceType = "env"
-	// Flag sourcetype is used for reading from command flags
-	Flag = "flag"
 	// JSON sourcetype is used for reading from JSON formatted files
 	JSON = "json"
 	// Yaml sourcetype is used for reading from yaml formatted files
