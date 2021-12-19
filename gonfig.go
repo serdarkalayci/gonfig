@@ -1,6 +1,10 @@
 package gonfig
 
-import "os"
+import (
+	"errors"
+	"os"
+	"strconv"
+)
 
 type loadedSource struct {
 	items  map[string]interface{}
@@ -51,4 +55,55 @@ func (c Configuration) findKey(key string) (interface{}, bool) {
 		}
 	}
 	return value, found
+}
+
+func (c Configuration) GetInt(key string) (int, error) {
+	val, found := c.findKey(key)
+	if !found {
+		return 0, errors.New("The key is not found among config sources")
+	}
+	return convertToInt(val)
+}
+
+func convertToInt(val interface{}) (int, error) {
+	var i int // your final value
+	var err error
+	switch t := val.(type) {
+	case int:
+		i = t
+	case int8:
+		i = int(t) // standardizes across systems
+	case int16:
+		i = int(t) // standardizes across systems
+	case int32:
+		i = int(t) // standardizes across systems
+	case int64:
+		i = int(t) // standardizes across systems
+	case bool:
+		if t {
+			i = 1
+		} else {
+			i = 0
+		}
+	case float32:
+		i = int(t) // standardizes across systems
+	case float64:
+		i = int(t) // standardizes across systems
+	case uint:
+		i = int(t) // standardizes across systems
+	case uint8:
+		i = int(t) // standardizes across systems
+	case uint16:
+		i = int(t) // standardizes across systems
+	case uint32:
+		i = int(t) // standardizes across systems
+	case uint64:
+		i = int(t) // standardizes across systems
+	case string:
+		i, err = strconv.Atoi(t)
+	default:
+		i = 0
+		err = errors.New("Unknown type")
+	}
+	return i, err
 }

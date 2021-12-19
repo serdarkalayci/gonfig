@@ -57,3 +57,116 @@ func Test_AddConfigSource_Env(t *testing.T) {
 	assert.Equal(t, false, found)
 	assert.Nil(t, val)
 }
+
+func Test_GetInt(t *testing.T) {
+	var c Configuration
+	s := ConfigSource{
+		Type: Env,
+	}
+	c = c.AddConfigSource(s)
+	assert.Equal(t, len(c.sources), 1)
+	os.Setenv("key1", "1")
+	val, err := c.GetInt("key1")
+	assert.Nil(t, err)
+	assert.Equal(t, 1, val)
+	val, err = c.GetInt("key2")
+	assert.EqualError(t, err, "The key is not found among config sources")
+	assert.Equal(t, 0, val)
+}
+
+func Test_convertToInt(t *testing.T) {
+	// int
+	var intVal int
+	intVal = 1
+	val, err := convertToInt(intVal)
+	assert.Equal(t, 1, val)
+	assert.Nil(t, err)
+	// string
+	var strVal string
+	strVal = "12"
+	val, err = convertToInt(strVal)
+	assert.Equal(t, 12, val)
+	assert.Nil(t, err)
+	// float32
+	var fl32Val float32
+	fl32Val = 21.0
+	val, err = convertToInt(fl32Val)
+	assert.Equal(t, 21, val)
+	assert.Nil(t, err)
+	// float64
+	var fl64Val float64
+	fl64Val = 21.0
+	val, err = convertToInt(fl64Val)
+	assert.Equal(t, 21, val)
+	assert.Nil(t, err)
+	// bool
+	var boolVal bool
+	boolVal = true
+	val, err = convertToInt(boolVal)
+	assert.Equal(t, 1, val)
+	assert.Nil(t, err)
+	boolVal = false
+	val, err = convertToInt(boolVal)
+	assert.Equal(t, 0, val)
+	assert.Nil(t, err)
+	// int8
+	var int8Val int8
+	int8Val = 8
+	val, err = convertToInt(int8Val)
+	assert.Equal(t, 8, val)
+	assert.Nil(t, err)
+	// int16
+	var int16Val int16
+	int16Val = 16
+	val, err = convertToInt(int16Val)
+	assert.Equal(t, 16, val)
+	assert.Nil(t, err)
+	// int32
+	var int32Val int32
+	int32Val = 32
+	val, err = convertToInt(int32Val)
+	assert.Equal(t, 32, val)
+	assert.Nil(t, err)
+	// int64
+	var int64Val int64
+	int64Val = 64
+	val, err = convertToInt(int64Val)
+	assert.Equal(t, 64, val)
+	assert.Nil(t, err)
+	// uint
+	var uintVal uint
+	uintVal = 1
+	val, err = convertToInt(uintVal)
+	assert.Equal(t, 1, val)
+	assert.Nil(t, err)
+	// uint8
+	var uint8Val uint8
+	uint8Val = 8
+	val, err = convertToInt(uint8Val)
+	assert.Equal(t, 8, val)
+	assert.Nil(t, err)
+	// uint16
+	var uint16Val uint16
+	uint16Val = 16
+	val, err = convertToInt(uint16Val)
+	assert.Equal(t, 16, val)
+	assert.Nil(t, err)
+	// uint32
+	var uint32Val uint32
+	uint32Val = 32
+	val, err = convertToInt(uint32Val)
+	assert.Equal(t, 32, val)
+	assert.Nil(t, err)
+	// uint64
+	var uint64Val uint64
+	uint64Val = 64
+	val, err = convertToInt(uint64Val)
+	assert.Equal(t, 64, val)
+	assert.Nil(t, err)
+	// unknown
+	var unknown = make(map[string]string)
+	unknown["test"] = "test"
+	val, err = convertToInt(unknown)
+	assert.Equal(t, 0, val)
+	assert.EqualError(t, err, "Unknown type")
+}
