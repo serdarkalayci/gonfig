@@ -39,12 +39,14 @@ func (c Configuration) findKey(key string) (interface{}, bool) {
 	for _, loadedSource := range c.sources {
 		switch loadedSource.source.Type {
 		case "json", "yaml":
-			if val, found := loadedSource.items[key]; found {
+			if val, fnd := loadedSource.items[key]; fnd {
 				value = val
+				found = fnd
 			}
 		case "env":
-			if val, found := os.LookupEnv(key); found {
+			if val, fnd := os.LookupEnv(key); fnd {
 				value = val
+				found = fnd
 			}
 		}
 	}
