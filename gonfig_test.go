@@ -8,7 +8,7 @@ import (
 	"github.com/stretchr/testify/assert"
 )
 
-func Test_AddConfigSource_JSON(t *testing.T) {
+func Test_AddConfigSource_JSON_YAML(t *testing.T) {
 	var c Configuration
 	s := ConfigSource{
 		Type:     JSON,
@@ -21,7 +21,7 @@ func Test_AddConfigSource_JSON(t *testing.T) {
 	assert.Equal(t, true, found)
 	assert.Equal(t, "value1", val)
 	// Let's add a second YAML source with different values
-	mockFile("key1: \"value1_2\"	\nkey2: \"value2_2\"  \nintkey3: 32", nil)
+	mockFile("key1: \"value1_2\"\nkey2: \"value2_2\"\nintkey3: 32", nil)
 	s = ConfigSource{
 		Type:     Yaml,
 		FilePath: "testing.yaml",
@@ -39,6 +39,37 @@ func Test_AddConfigSource_JSON(t *testing.T) {
 	assert.Equal(t, true, found)
 	assert.Equal(t, "value1_2", val)
 	assert.EqualError(t, c.sources[2].err, "File reading error") // Let's make sure that the relevant config source has the error returned
+}
+
+func Test_AddConfigSource_JSON_YAML_Array(t *testing.T) {
+	var c Configuration
+	s := ConfigSource{
+		Type:     JSON,
+		FilePath: "testing.json",
+	}
+	mockFile("{\"key1\":\"value1\", \"strarraykey\":[\"strval1\",\"strval2\"], \"intarraykey\":[123,456,789]}", nil)
+	c = c.AddConfigSource(s)
+	assert.Equal(t, len(c.sources), 1)
+	val, found := c.findKey("strarraykey")
+	assert.Equal(t, true, found)
+	assert.Equal(t, []interface{}{"strval1", "strval2"}, val)
+	val, found = c.findKey("intarraykey")
+	assert.Equal(t, true, found)
+	assert.Equal(t, []interface{}{123.0, 456.0, 789.0}, val)
+	// Let's add a second YAML source with different values
+	mockFile("key1: \"value1_2\"\nstrarraykey:\n  - strval1_2\n  - strval2_2\nintarraykey:\n  - 321\n  - 654\n  - 987", nil)
+	s = ConfigSource{
+		Type:     Yaml,
+		FilePath: "testing.yaml",
+	}
+	c = c.AddConfigSource(s)
+	assert.Equal(t, len(c.sources), 2)
+	val, found = c.findKey("strarraykey")
+	assert.Equal(t, true, found)
+	assert.Equal(t, []interface{}{"strval1_2", "strval2_2"}, val)
+	val, found = c.findKey("intarraykey")
+	assert.Equal(t, true, found)
+	assert.Equal(t, []interface{}{321, 654, 987}, val)
 }
 
 func Test_AddConfigSource_Env(t *testing.T) {
