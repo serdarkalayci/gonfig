@@ -92,3 +92,31 @@ func (c Configuration) GetFloat(key string) (float64, error) {
 	}
 	return convertToFloat(val)
 }
+
+// GetIntArray returns the []int value if the key is amongst the config sources.
+// It'll ignore if the items cannot be converted to int by skipping them
+// Returns an error otherwise
+func (c Configuration) GetIntArray(key string) ([]int, error) {
+	val, found := c.findKey(key)
+	if !found {
+		return nil, errors.New("The key is not found among config sources")
+	}
+	arr := make([]int, 0)
+	switch val := val.(type) {
+	case []string:
+		for _, value := range val {
+			if newval, err := convertToInt(value); err == nil {
+				arr = append(arr, newval)
+			}
+		}
+	case []interface{}:
+		for _, value := range val {
+			if newval, err := convertToInt(value); err == nil {
+				arr = append(arr, newval)
+			}
+		}
+	default:
+		return nil, errors.New("The value is not an array or slice")
+	}
+	return arr, nil
+}
