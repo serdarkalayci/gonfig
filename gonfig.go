@@ -2,6 +2,7 @@ package gonfig
 
 import (
 	"errors"
+	"fmt"
 	"os"
 	"strconv"
 )
@@ -106,4 +107,16 @@ func convertToInt(val interface{}) (int, error) {
 		err = errors.New("Unknown type")
 	}
 	return i, err
+}
+
+func (c Configuration) GetString(key string) (string, error) {
+	val, found := c.findKey(key)
+	if !found {
+		return "", errors.New("The key is not found among config sources")
+	}
+	return convertToString(val), nil
+}
+
+func convertToString(val interface{}) string {
+	return fmt.Sprintf("%v", val)
 }
