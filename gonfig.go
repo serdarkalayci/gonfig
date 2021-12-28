@@ -58,6 +58,8 @@ func (c Configuration) findKey(key string) (interface{}, bool) {
 	return value, found
 }
 
+// GetInt returns the int value if the key is amongst the config sources and if the value is convertable to int
+// Returns an error otherwise
 func (c Configuration) GetInt(key string) (int, error) {
 	val, found := c.findKey(key)
 	if !found {
@@ -109,6 +111,8 @@ func convertToInt(val interface{}) (int, error) {
 	return i, err
 }
 
+// GetString returns the string value if the key is amongst the config sources
+// Returns an error otherwise
 func (c Configuration) GetString(key string) (string, error) {
 	val, found := c.findKey(key)
 	if !found {
@@ -119,4 +123,57 @@ func (c Configuration) GetString(key string) (string, error) {
 
 func convertToString(val interface{}) string {
 	return fmt.Sprintf("%v", val)
+}
+
+// GetFloat returns the float value if the key is amongst the config sources and if the value is convertable to float
+// Returns an error otherwise
+func (c Configuration) GetFloat(key string) (float64, error) {
+	val, found := c.findKey(key)
+	if !found {
+		return 0, errors.New("The key is not found among config sources")
+	}
+	return convertToFloat(val)
+}
+
+func convertToFloat(val interface{}) (float64, error) {
+	var f float64 // your final value
+	var err error
+	switch t := val.(type) {
+	case int:
+		f = float64(t)
+	case int8:
+		f = float64(t) // standardizes across systems
+	case int16:
+		f = float64(t) // standardizes across systems
+	case int32:
+		f = float64(t) // standardizes across systems
+	case int64:
+		f = float64(t) // standardizes across systems
+	case bool:
+		if t {
+			f = 1
+		} else {
+			f = 0
+		}
+	case float32:
+		f = float64(t) // standardizes across systems
+	case float64:
+		f = t // standardizes across systems
+	case uint:
+		f = float64(t) // standardizes across systems
+	case uint8:
+		f = float64(t) // standardizes across systems
+	case uint16:
+		f = float64(t) // standardizes across systems
+	case uint32:
+		f = float64(t) // standardizes across systems
+	case uint64:
+		f = float64(t) // standardizes across systems
+	case string:
+		f, err = strconv.ParseFloat(t, 64)
+	default:
+		f = 0
+		err = errors.New("Unknown type")
+	}
+	return f, err
 }
