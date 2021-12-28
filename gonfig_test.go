@@ -184,7 +184,7 @@ func Test_GetString(t *testing.T) {
 	assert.Equal(t, "1", val)
 	val, err = c.GetString("key2")
 	assert.EqualError(t, err, "The key is not found among config sources")
-	assert.Equal(t, 0, val)
+	assert.Equal(t, "", val)
 }
 
 func Test_convertToString(t *testing.T) {
