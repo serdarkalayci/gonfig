@@ -80,13 +80,19 @@ func Test_AddConfigSource_Env(t *testing.T) {
 	c = c.AddConfigSource(s)
 	assert.Equal(t, len(c.sources), 1)
 	os.Setenv("key1", "value1")
+	// Let's try to find a key that's there
 	val, found := c.findKey("key1")
 	assert.Equal(t, true, found)
 	assert.Equal(t, "value1", val)
-	// Let's try to find
+	// Let's try to find a key that's not there
 	val, found = c.findKey("key2")
 	assert.Equal(t, false, found)
 	assert.Nil(t, val)
+	os.Setenv("arrkey1", "[\"val1\",\"val2\",\"val3\"]")
+	// Let's try to find a key that's there
+	val, found = c.findKey("arrkey1")
+	assert.Equal(t, true, found)
+	assert.Equal(t, []string{"\"val1\"", "\"val2\"", "\"val3\""}, val)
 }
 
 func Test_GetInt(t *testing.T) {

@@ -3,6 +3,7 @@ package gonfig
 import (
 	"errors"
 	"os"
+	"strings"
 )
 
 type loadedSource struct {
@@ -49,6 +50,12 @@ func (c Configuration) findKey(key string) (interface{}, bool) {
 		case "env":
 			if val, fnd := os.LookupEnv(key); fnd {
 				value = val
+				if strings.HasPrefix(val, "[") && strings.HasSuffix(val, "]") { // We will assume the returned val is an array if it starts with "[" and ends with "]"
+					val = strings.TrimPrefix(val, "[")
+					val = strings.TrimSuffix(val, "]")
+					varr := strings.Split(val, ",")
+					value = varr
+				}
 				found = fnd
 			}
 		}
