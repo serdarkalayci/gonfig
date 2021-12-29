@@ -120,3 +120,24 @@ func (c Configuration) GetIntArray(key string) ([]int, error) {
 	}
 	return arr, nil
 }
+
+// GetStringArray returns the []string value if the key is amongst the config sources.
+// Returns an error otherwise
+func (c Configuration) GetStringArray(key string) ([]string, error) {
+	val, found := c.findKey(key)
+	if !found {
+		return nil, errors.New("The key is not found among config sources")
+	}
+	arr := make([]string, 0)
+	switch val := val.(type) {
+	case []string:
+		arr = val
+	case []interface{}:
+		for _, value := range val {
+			arr = append(arr, convertToString(value))
+		}
+	default:
+		return nil, errors.New("The value is not an array or slice")
+	}
+	return arr, nil
+}

@@ -182,3 +182,37 @@ func Test_GetIntArray(t *testing.T) {
 	assert.EqualError(t, err, "The key is not found among config sources")
 	assert.Equal(t, []int(nil), val)
 }
+
+func Test_GetStringArray(t *testing.T) {
+	var c Configuration
+	s := ConfigSource{
+		Type: Env,
+	}
+	c = c.AddConfigSource(s)
+	assert.Equal(t, len(c.sources), 1)
+	// Env array variables are interpreted as []string
+	os.Setenv("strarraykey", "[strval1,strval2,123]")
+	// Let's try to find an array key that's there
+	val, err := c.GetStringArray("strarraykey")
+	assert.Nil(t, err)
+	assert.Equal(t, []string{"strval1", "strval2", "123"}, val)
+	// JSON and Yaml array variables are interpreted as []interface{}
+	mockFile("{\"key1\":\"value1\", \"strarraykey\":[\"strval1_2\",\"strval2_2\"], \"intarraykey\":[123,456,789]}", nil)
+	s = ConfigSource{
+		Type:     JSON,
+		FilePath: "testing.json",
+	}
+	c = c.AddConfigSource(s)
+	// Let's try to find an array key that's there
+	val, err = c.GetStringArray("strarraykey")
+	assert.Nil(t, err)
+	assert.Equal(t, []string{"strval1_2", "strval2_2"}, val)
+	// Let's try to find a value that's not an array
+	val, err = c.GetStringArray("key1")
+	assert.EqualError(t, err, "The value is not an array or slice")
+	assert.Equal(t, []string(nil), val)
+	// Let's try to find an array key that's not there
+	val, err = c.GetStringArray("key2")
+	assert.EqualError(t, err, "The key is not found among config sources")
+	assert.Equal(t, []string(nil), val)
+}
