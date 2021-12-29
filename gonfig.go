@@ -141,3 +141,31 @@ func (c Configuration) GetStringArray(key string) ([]string, error) {
 	}
 	return arr, nil
 }
+
+// GetFloatArray returns the []float64 value if the key is amongst the config sources.
+// It'll ignore if the items cannot be converted to float64 by skipping them
+// Returns an error otherwise
+func (c Configuration) GetFloatArray(key string) ([]float64, error) {
+	val, found := c.findKey(key)
+	if !found {
+		return nil, errors.New("The key is not found among config sources")
+	}
+	arr := make([]float64, 0)
+	switch val := val.(type) {
+	case []string:
+		for _, value := range val {
+			if newval, err := convertToFloat(value); err == nil {
+				arr = append(arr, newval)
+			}
+		}
+	case []interface{}:
+		for _, value := range val {
+			if newval, err := convertToFloat(value); err == nil {
+				arr = append(arr, newval)
+			}
+		}
+	default:
+		return nil, errors.New("The value is not an array or slice")
+	}
+	return arr, nil
+}

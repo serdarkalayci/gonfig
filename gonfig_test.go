@@ -157,13 +157,13 @@ func Test_GetIntArray(t *testing.T) {
 	c = c.AddConfigSource(s)
 	assert.Equal(t, len(c.sources), 1)
 	// Env array variables are interpreted as []string
-	os.Setenv("arrkey1", "[123,456,\"abc\",789]")
+	os.Setenv("intarraykey", "[123,456,\"abc\",789]")
 	// Let's try to find an array key that's there
-	val, err := c.GetIntArray("arrkey1")
+	val, err := c.GetIntArray("intarraykey")
 	assert.Nil(t, err)
 	assert.Equal(t, []int{123, 456, 789}, val)
 	// JSON and Yaml array variables are interpreted as []interface{}
-	mockFile("{\"key1\":\"value1\", \"strarraykey\":[\"strval1\",\"strval2\"], \"intarraykey\":[123,456,789]}", nil)
+	mockFile("{\"key1\":\"value1\", \"strarraykey\":[\"strval1\",\"strval2\"], \"intarraykey\":[321,654,987]}", nil)
 	s = ConfigSource{
 		Type:     JSON,
 		FilePath: "testing.json",
@@ -172,7 +172,7 @@ func Test_GetIntArray(t *testing.T) {
 	// Let's try to find an array key that's there
 	val, err = c.GetIntArray("intarraykey")
 	assert.Nil(t, err)
-	assert.Equal(t, []int{123, 456, 789}, val)
+	assert.Equal(t, []int{321, 654, 987}, val)
 	// Let's try to find a value that's not an array
 	val, err = c.GetIntArray("key1")
 	assert.EqualError(t, err, "The value is not an array or slice")
@@ -215,4 +215,38 @@ func Test_GetStringArray(t *testing.T) {
 	val, err = c.GetStringArray("key2")
 	assert.EqualError(t, err, "The key is not found among config sources")
 	assert.Equal(t, []string(nil), val)
+}
+
+func Test_GetFloatArray(t *testing.T) {
+	var c Configuration
+	s := ConfigSource{
+		Type: Env,
+	}
+	c = c.AddConfigSource(s)
+	assert.Equal(t, len(c.sources), 1)
+	// Env array variables are interpreted as []string
+	os.Setenv("fltarraykey", "[123.45,456.78,\"abc\",789.01]")
+	// Let's try to find an array key that's there
+	val, err := c.GetFloatArray("fltarraykey")
+	assert.Nil(t, err)
+	assert.Equal(t, []float64{123.45, 456.78, 789.01}, val)
+	// JSON and Yaml array variables are interpreted as []interface{}
+	mockFile("{\"key1\":\"value1\", \"strarraykey\":[\"strval1\",\"strval2\"], \"fltarraykey\":[123.12,456.45,789.78]}", nil)
+	s = ConfigSource{
+		Type:     JSON,
+		FilePath: "testing.json",
+	}
+	c = c.AddConfigSource(s)
+	// Let's try to find an array key that's there
+	val, err = c.GetFloatArray("fltarraykey")
+	assert.Nil(t, err)
+	assert.Equal(t, []float64{123.12, 456.45, 789.78}, val)
+	// Let's try to find a value that's not an array
+	val, err = c.GetFloatArray("key1")
+	assert.EqualError(t, err, "The value is not an array or slice")
+	assert.Equal(t, []float64(nil), val)
+	// Let's try to find an array key that's not there
+	val, err = c.GetFloatArray("key2")
+	assert.EqualError(t, err, "The key is not found among config sources")
+	assert.Equal(t, []float64(nil), val)
 }
