@@ -280,3 +280,204 @@ func Test_convertToFloat(t *testing.T) {
 	assert.Equal(t, 0.0, val)
 	assert.EqualError(t, err, "Unknown type")
 }
+
+func Test_convertToBool(t *testing.T) {
+	// int
+	var intVal int
+	intVal = 0
+	val, err := convertToBool(intVal)
+	assert.Equal(t, false, val)
+	assert.Nil(t, err)
+	intVal = 1
+	val, err = convertToBool(intVal)
+	assert.Equal(t, true, val)
+	assert.Nil(t, err)
+	intVal = 2
+	val, err = convertToBool(intVal)
+	assert.Equal(t, false, val)
+	assert.EqualError(t, err, "Unknown value")
+	// string
+	var strVal string
+	strVal = "0"
+	val, err = convertToBool(strVal)
+	assert.Equal(t, false, val)
+	assert.Nil(t, err)
+	strVal = "1"
+	val, err = convertToBool(strVal)
+	assert.Equal(t, true, val)
+	assert.Nil(t, err)
+	strVal = "12"
+	val, err = convertToBool(strVal)
+	assert.Equal(t, false, val)
+	assert.EqualError(t, err, "Unknown value")
+	// float32
+	var fl32Val float32
+	fl32Val = 0.0
+	val, err = convertToBool(fl32Val)
+	assert.Equal(t, false, val)
+	assert.Nil(t, err)
+	fl32Val = 1.0
+	val, err = convertToBool(fl32Val)
+	assert.Equal(t, true, val)
+	assert.Nil(t, err)
+	fl32Val = 21.0
+	val, err = convertToBool(fl32Val)
+	assert.Equal(t, false, val)
+	assert.EqualError(t, err, "Unknown value")
+	// float64
+	var fl64Val float64
+	fl64Val = 0.0
+	val, err = convertToBool(fl64Val)
+	assert.Equal(t, false, val)
+	assert.Nil(t, err)
+	fl64Val = 1.0
+	val, err = convertToBool(fl64Val)
+	assert.Equal(t, true, val)
+	assert.Nil(t, err)
+	fl64Val = 21.0
+	val, err = convertToBool(fl64Val)
+	assert.Equal(t, false, val)
+	assert.EqualError(t, err, "Unknown value")
+	// bool
+	var boolVal bool
+	boolVal = true
+	val, err = convertToBool(boolVal)
+	assert.Equal(t, true, val)
+	assert.Nil(t, err)
+	boolVal = false
+	val, err = convertToBool(boolVal)
+	assert.Equal(t, false, val)
+	assert.Nil(t, err)
+	// int8
+	var int8Val int8
+	int8Val = 0
+	val, err = convertToBool(int8Val)
+	assert.Equal(t, false, val)
+	assert.Nil(t, err)
+	int8Val = 1
+	val, err = convertToBool(int8Val)
+	assert.Equal(t, true, val)
+	assert.Nil(t, err)
+	int8Val = 8
+	val, err = convertToBool(int8Val)
+	assert.Equal(t, false, val)
+	assert.EqualError(t, err, "Unknown value")
+	// int16
+	var int16Val int16
+	int16Val = 0
+	val, err = convertToBool(int16Val)
+	assert.Equal(t, false, val)
+	assert.Nil(t, err)
+	int16Val = 1
+	val, err = convertToBool(int16Val)
+	assert.Equal(t, true, val)
+	assert.Nil(t, err)
+	int16Val = 16
+	val, err = convertToBool(int16Val)
+	assert.Equal(t, false, val)
+	assert.EqualError(t, err, "Unknown value")
+	// int32
+	var int32Val int32
+	int32Val = 0
+	val, err = convertToBool(int32Val)
+	assert.Equal(t, false, val)
+	assert.Nil(t, err)
+	int32Val = 1
+	val, err = convertToBool(int32Val)
+	assert.Equal(t, true, val)
+	assert.Nil(t, err)
+	int32Val = 32
+	val, err = convertToBool(int32Val)
+	assert.Equal(t, false, val)
+	assert.EqualError(t, err, "Unknown value")
+	// int64
+	var int64Val int64
+	int64Val = 0
+	val, err = convertToBool(int64Val)
+	assert.Equal(t, false, val)
+	assert.Nil(t, err)
+	int64Val = 1
+	val, err = convertToBool(int64Val)
+	assert.Equal(t, true, val)
+	assert.Nil(t, err)
+	int64Val = 64
+	val, err = convertToBool(int64Val)
+	assert.Equal(t, false, val)
+	assert.EqualError(t, err, "Unknown value")
+	// uint
+	var uintVal uint
+	uintVal = 0
+	val, err = convertToBool(uintVal)
+	assert.Equal(t, false, val)
+	assert.Nil(t, err)
+	uintVal = 1
+	val, err = convertToBool(uintVal)
+	assert.Equal(t, true, val)
+	assert.Nil(t, err)
+	uintVal = 11
+	val, err = convertToBool(uintVal)
+	assert.Equal(t, false, val)
+	assert.EqualError(t, err, "Unknown value")
+	// uint8
+	var uint8Val uint8
+	uint8Val = 0
+	val, err = convertToBool(uint8Val)
+	assert.Equal(t, false, val)
+	assert.Nil(t, err)
+	uint8Val = 1
+	val, err = convertToBool(uint8Val)
+	assert.Equal(t, true, val)
+	assert.Nil(t, err)
+	uint8Val = 8
+	val, err = convertToBool(uint8Val)
+	assert.Equal(t, false, val)
+	assert.EqualError(t, err, "Unknown value")
+	// uint16
+	var uint16Val uint16
+	uint16Val = 0
+	val, err = convertToBool(uint16Val)
+	assert.Equal(t, false, val)
+	assert.Nil(t, err)
+	uint16Val = 1
+	val, err = convertToBool(uint16Val)
+	assert.Equal(t, true, val)
+	assert.Nil(t, err)
+	uint16Val = 16
+	val, err = convertToBool(uint16Val)
+	assert.Equal(t, false, val)
+	assert.EqualError(t, err, "Unknown value")
+	// uint32
+	var uint32Val uint32
+	uint32Val = 0
+	val, err = convertToBool(uint32Val)
+	assert.Equal(t, false, val)
+	assert.Nil(t, err)
+	uint32Val = 1
+	val, err = convertToBool(uint32Val)
+	assert.Equal(t, true, val)
+	assert.Nil(t, err)
+	uint32Val = 32
+	val, err = convertToBool(uint32Val)
+	assert.Equal(t, false, val)
+	assert.EqualError(t, err, "Unknown value")
+	// uint64
+	var uint64Val uint64
+	uint64Val = 0
+	val, err = convertToBool(uint64Val)
+	assert.Equal(t, false, val)
+	assert.Nil(t, err)
+	uint64Val = 1
+	val, err = convertToBool(uint64Val)
+	assert.Equal(t, true, val)
+	assert.Nil(t, err)
+	uint64Val = 64
+	val, err = convertToBool(uint64Val)
+	assert.Equal(t, false, val)
+	assert.EqualError(t, err, "Unknown value")
+	// unknown
+	var unknown = make(map[string]string)
+	unknown["test"] = "test"
+	val, err = convertToBool(unknown)
+	assert.Equal(t, false, val)
+	assert.EqualError(t, err, "Unknown type")
+}

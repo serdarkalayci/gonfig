@@ -95,3 +95,133 @@ func convertToFloat(val interface{}) (float64, error) {
 	}
 	return f, err
 }
+
+func convertToBool(val interface{}) (bool, error) {
+	var b bool = false // your final value
+	var err error
+	switch t := val.(type) {
+	case int:
+		switch t {
+		case 0:
+			b = false
+		case 1:
+			b = true
+		default:
+			err = errors.New("Unknown value")
+		}
+	case int8:
+		switch t {
+		case 0:
+			b = false
+		case 1:
+			b = true
+		default:
+			err = errors.New("Unknown value")
+		}
+	case int16:
+		switch t {
+		case 0:
+			b = false
+		case 1:
+			b = true
+		default:
+			err = errors.New("Unknown value")
+		}
+	case int32:
+		switch t {
+		case 0:
+			b = false
+		case 1:
+			b = true
+		default:
+			err = errors.New("Unknown value")
+		}
+	case int64:
+		switch t {
+		case 0:
+			b = false
+		case 1:
+			b = true
+		default:
+			err = errors.New("Unknown value")
+		}
+	case bool:
+		b = t
+	case float32:
+		switch t {
+		case 0:
+			b = false
+		case 1:
+			b = true
+		default:
+			err = errors.New("Unknown value")
+		}
+	case float64:
+		switch t {
+		case 0:
+			b = false
+		case 1:
+			b = true
+		default:
+			err = errors.New("Unknown value")
+		}
+	case uint:
+		switch t {
+		case 0:
+			b = false
+		case 1:
+			b = true
+		default:
+			err = errors.New("Unknown value")
+		}
+	case uint8:
+		switch t {
+		case 0:
+			b = false
+		case 1:
+			b = true
+		default:
+			err = errors.New("Unknown value")
+		}
+	case uint16:
+		switch t {
+		case 0:
+			b = false
+		case 1:
+			b = true
+		default:
+			err = errors.New("Unknown value")
+		}
+	case uint32:
+		switch t {
+		case 0:
+			b = false
+		case 1:
+			b = true
+		default:
+			err = errors.New("Unknown value")
+		}
+	case uint64:
+		switch t {
+		case 0:
+			b = false
+		case 1:
+			b = true
+		default:
+			err = errors.New("Unknown value")
+		}
+	case string:
+		switch t {
+		case "0":
+			b = false
+		case "1":
+			b = true
+		default:
+			err = errors.New("Unknown value")
+		}
+	default:
+		b = false
+		err = errors.New("Unknown type")
+	}
+	return b, err
+}
