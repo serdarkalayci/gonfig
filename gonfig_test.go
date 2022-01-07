@@ -149,6 +149,24 @@ func Test_GetFloat(t *testing.T) {
 	assert.Equal(t, 0.0, val)
 }
 
+func Test_GetBool(t *testing.T) {
+	var c Configuration
+	s := ConfigSource{
+		Type: Env,
+	}
+	c = c.AddConfigSource(s)
+	assert.Equal(t, len(c.sources), 1)
+	os.Setenv("key1", "1")
+	// Let's try to find a key that's there
+	val, err := c.GetBool("key1")
+	assert.Nil(t, err)
+	assert.Equal(t, true, val)
+	// Let's try to find an array key that's not there
+	val, err = c.GetBool("key2")
+	assert.EqualError(t, err, "The key is not found among config sources")
+	assert.Equal(t, false, val)
+}
+
 func Test_GetIntArray(t *testing.T) {
 	var c Configuration
 	s := ConfigSource{

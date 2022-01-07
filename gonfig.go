@@ -93,6 +93,16 @@ func (c Configuration) GetFloat(key string) (float64, error) {
 	return convertToFloat(val)
 }
 
+// GetBool returns the bool value if the key is amongst the config sources and if the value is convertable to bool
+// Returns an error otherwise
+func (c Configuration) GetBool(key string) (bool, error) {
+	val, found := c.findKey(key)
+	if !found {
+		return false, errors.New("The key is not found among config sources")
+	}
+	return convertToBool(val)
+}
+
 // GetIntArray returns the []int value if the key is amongst the config sources.
 // It'll ignore if the items cannot be converted to int by skipping them
 // Returns an error otherwise
