@@ -73,6 +73,15 @@ func (c Configuration) GetInt(key string) (int, error) {
 	return convertToInt(val)
 }
 
+// GetIntOrDefault returns the int value if the key is amongst the config sources and if the value is convertable to int
+// Returns the default value otherwise
+func (c Configuration) GetIntOrDefault(key string, defaultValue int) int {
+	if val, err := c.GetInt(key); err == nil {
+		return val
+	}
+	return defaultValue
+}
+
 // GetString returns the string value if the key is amongst the config sources
 // Returns an error otherwise
 func (c Configuration) GetString(key string) (string, error) {
@@ -81,6 +90,15 @@ func (c Configuration) GetString(key string) (string, error) {
 		return "", errors.New("The key is not found among config sources")
 	}
 	return convertToString(val), nil
+}
+
+// GetStringOrDefault returns the string value if the key is amongst the config sources
+// Returns the default value otherwise
+func (c Configuration) GetStringOrDefault(key string, defaultValue string) string {
+	if val, err := c.GetString(key); err == nil {
+		return val
+	}
+	return defaultValue
 }
 
 // GetFloat returns the float value if the key is amongst the config sources and if the value is convertable to float
@@ -93,6 +111,15 @@ func (c Configuration) GetFloat(key string) (float64, error) {
 	return convertToFloat(val)
 }
 
+// GetFloatOrDefault returns the float value if the key is amongst the config sources and if the value is convertable to float
+// Returns the default value otherwise
+func (c Configuration) GetFloatOrDefault(key string, defaultValue float64) float64 {
+	if val, err := c.GetFloat(key); err == nil {
+		return val
+	}
+	return defaultValue
+}
+
 // GetBool returns the bool value if the key is amongst the config sources and if the value is convertable to bool
 // Returns an error otherwise
 func (c Configuration) GetBool(key string) (bool, error) {
@@ -101,6 +128,15 @@ func (c Configuration) GetBool(key string) (bool, error) {
 		return false, errors.New("The key is not found among config sources")
 	}
 	return convertToBool(val)
+}
+
+// GetBoolOrDefault returns the bool value if the key is amongst the config sources and if the value is convertable to bool
+// Returns the default value otherwise
+func (c Configuration) GetBoolOrDefault(key string, defaultValue bool) bool {
+	if val, err := c.GetBool(key); err == nil {
+		return val
+	}
+	return defaultValue
 }
 
 // GetIntArray returns the []int value if the key is amongst the config sources.
@@ -131,6 +167,16 @@ func (c Configuration) GetIntArray(key string) ([]int, error) {
 	return arr, nil
 }
 
+// GetIntArrayOrDefault returns the []int value if the key is amongst the config sources.
+// It'll ignore if the items cannot be converted to int by skipping them
+// Returns the default value otherwise
+func (c Configuration) GetIntArrayOrDefault(key string, defaultValue []int) []int {
+	if val, err := c.GetIntArray(key); err == nil {
+		return val
+	}
+	return defaultValue
+}
+
 // GetStringArray returns the []string value if the key is amongst the config sources.
 // Returns an error otherwise
 func (c Configuration) GetStringArray(key string) ([]string, error) {
@@ -150,6 +196,15 @@ func (c Configuration) GetStringArray(key string) ([]string, error) {
 		return nil, errors.New("The value is not an array or slice")
 	}
 	return arr, nil
+}
+
+// GetStringArrayOrDefault returns the []string value if the key is amongst the config sources.
+// Returns the default value otherwise
+func (c Configuration) GetStringArrayOrDefault(key string, defaultValue []string) []string {
+	if val, err := c.GetStringArray(key); err == nil {
+		return val
+	}
+	return defaultValue
 }
 
 // GetFloatArray returns the []float64 value if the key is amongst the config sources.
@@ -178,4 +233,14 @@ func (c Configuration) GetFloatArray(key string) ([]float64, error) {
 		return nil, errors.New("The value is not an array or slice")
 	}
 	return arr, nil
+}
+
+// GetFloatArrayOrDefault returns the []float64 value if the key is amongst the config sources.
+// It'll ignore if the items cannot be converted to float64 by skipping them
+// Returns the default value otherwise
+func (c Configuration) GetFloatArrayOrDefault(key string, defaultValue []float64) []float64 {
+	if val, err := c.GetFloatArray(key); err == nil {
+		return val
+	}
+	return defaultValue
 }
