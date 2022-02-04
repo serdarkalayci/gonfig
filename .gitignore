@@ -14,3 +14,7 @@
 # Dependency directories (remove the comment below to include it)
 # vendor/
 profile.cov
+
+# Editor spesific folders
+.idea/**
+.vscode/**
