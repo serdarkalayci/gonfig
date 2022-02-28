@@ -6,6 +6,10 @@ import (
 	"strings"
 )
 
+const (
+	msgNotAnArray string = "the value is not an array or slice"
+	msgKeyNotFound string = "the key is not found among config sources"
+)
 type loadedSource struct {
 	items  map[string]interface{}
 	source ConfigSource
@@ -68,7 +72,7 @@ func (c Configuration) findKey(key string) (interface{}, bool) {
 func (c Configuration) GetInt(key string) (int, error) {
 	val, found := c.findKey(key)
 	if !found {
-		return 0, errors.New("The key is not found among config sources")
+		return 0, errors.New(msgKeyNotFound)
 	}
 	return convertToInt(val)
 }
@@ -87,7 +91,7 @@ func (c Configuration) GetIntOrDefault(key string, defaultValue int) int {
 func (c Configuration) GetString(key string) (string, error) {
 	val, found := c.findKey(key)
 	if !found {
-		return "", errors.New("The key is not found among config sources")
+		return "", errors.New(msgKeyNotFound)
 	}
 	return convertToString(val), nil
 }
@@ -106,7 +110,7 @@ func (c Configuration) GetStringOrDefault(key string, defaultValue string) strin
 func (c Configuration) GetFloat(key string) (float64, error) {
 	val, found := c.findKey(key)
 	if !found {
-		return 0, errors.New("The key is not found among config sources")
+		return 0, errors.New(msgKeyNotFound)
 	}
 	return convertToFloat(val)
 }
@@ -125,7 +129,7 @@ func (c Configuration) GetFloatOrDefault(key string, defaultValue float64) float
 func (c Configuration) GetBool(key string) (bool, error) {
 	val, found := c.findKey(key)
 	if !found {
-		return false, errors.New("The key is not found among config sources")
+		return false, errors.New(msgKeyNotFound)
 	}
 	return convertToBool(val)
 }
@@ -145,7 +149,7 @@ func (c Configuration) GetBoolOrDefault(key string, defaultValue bool) bool {
 func (c Configuration) GetIntArray(key string) ([]int, error) {
 	val, found := c.findKey(key)
 	if !found {
-		return nil, errors.New("The key is not found among config sources")
+		return nil, errors.New(msgKeyNotFound)
 	}
 	arr := make([]int, 0)
 	switch val := val.(type) {
@@ -162,7 +166,7 @@ func (c Configuration) GetIntArray(key string) ([]int, error) {
 			}
 		}
 	default:
-		return nil, errors.New("The value is not an array or slice")
+		return nil, errors.New(msgNotAnArray)
 	}
 	return arr, nil
 }
@@ -182,7 +186,7 @@ func (c Configuration) GetIntArrayOrDefault(key string, defaultValue []int) []in
 func (c Configuration) GetStringArray(key string) ([]string, error) {
 	val, found := c.findKey(key)
 	if !found {
-		return nil, errors.New("The key is not found among config sources")
+		return nil, errors.New(msgKeyNotFound)
 	}
 	arr := make([]string, 0)
 	switch val := val.(type) {
@@ -193,7 +197,7 @@ func (c Configuration) GetStringArray(key string) ([]string, error) {
 			arr = append(arr, convertToString(value))
 		}
 	default:
-		return nil, errors.New("The value is not an array or slice")
+		return nil, errors.New(msgNotAnArray)
 	}
 	return arr, nil
 }
@@ -213,7 +217,7 @@ func (c Configuration) GetStringArrayOrDefault(key string, defaultValue []string
 func (c Configuration) GetFloatArray(key string) ([]float64, error) {
 	val, found := c.findKey(key)
 	if !found {
-		return nil, errors.New("The key is not found among config sources")
+		return nil, errors.New(msgKeyNotFound)
 	}
 	arr := make([]float64, 0)
 	switch val := val.(type) {
@@ -230,7 +234,7 @@ func (c Configuration) GetFloatArray(key string) ([]float64, error) {
 			}
 		}
 	default:
-		return nil, errors.New("The value is not an array or slice")
+		return nil, errors.New(msgNotAnArray)
 	}
 	return arr, nil
 }
