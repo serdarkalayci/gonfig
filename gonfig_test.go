@@ -12,7 +12,7 @@ func Test_AddConfigSource_JSON_YAML(t *testing.T) {
 	tacl := testingACL{t: t}
 	var c Configuration
 	s := ConfigSource{
-		Type:     JSON,
+		Type:     SourceTypeJSON,
 		FilePath: "testing.json",
 	}
 	mockFile("{\"key1\":\"value1\", \"key2\":\"value2\", \"intkey3\":3}", nil)
@@ -24,7 +24,7 @@ func Test_AddConfigSource_JSON_YAML(t *testing.T) {
 	// Let's add a second YAML source with different values
 	mockFile("key1: \"value1_2\"\nkey2: \"value2_2\"\nintkey3: 32", nil)
 	s = ConfigSource{
-		Type:     Yaml,
+		Type:     SourceTypeYaml,
 		FilePath: "testing.yaml",
 	}
 	c = c.AddConfigSource(s)
@@ -46,7 +46,7 @@ func Test_AddConfigSource_JSON_YAML_Array(t *testing.T) {
 	tacl := testingACL{t: t}
 	var c Configuration
 	s := ConfigSource{
-		Type:     JSON,
+		Type:     SourceTypeJSON,
 		FilePath: "testing.json",
 	}
 	mockFile("{\"key1\":\"value1\", \"strarraykey\":[\"strval1\",\"strval2\"], \"intarraykey\":[123,456,789]}", nil)
@@ -61,7 +61,7 @@ func Test_AddConfigSource_JSON_YAML_Array(t *testing.T) {
 	// Let's add a second YAML source with different values
 	mockFile("key1: \"value1_2\"\nstrarraykey:\n  - strval1_2\n  - strval2_2\nintarraykey:\n  - 321\n  - 654\n  - 987", nil)
 	s = ConfigSource{
-		Type:     Yaml,
+		Type:     SourceTypeYaml,
 		FilePath: "testing.yaml",
 	}
 	c = c.AddConfigSource(s)
@@ -78,7 +78,7 @@ func Test_AddConfigSource_Env(t *testing.T) {
 	tacl := testingACL{t: t}
 	var c Configuration
 	s := ConfigSource{
-		Type: Env,
+		Type: SourceTypeEnv,
 	}
 	c = c.AddConfigSource(s)
 	assert.Equal(tacl, len(c.sources), 1)
@@ -102,7 +102,7 @@ func Test_GetInt(t *testing.T) {
 	tacl := testingACL{t: t}
 	var c Configuration
 	s := ConfigSource{
-		Type: Env,
+		Type: SourceTypeEnv,
 	}
 	c = c.AddConfigSource(s)
 	assert.Equal(tacl, len(c.sources), 1)
@@ -121,7 +121,7 @@ func Test_GetIntOrDefault(t *testing.T) {
 	tacl := testingACL{t: t}
 	var c Configuration
 	s := ConfigSource{
-		Type: Env,
+		Type: SourceTypeEnv,
 	}
 	c = c.AddConfigSource(s)
 	assert.Equal(tacl, len(c.sources), 1)
@@ -139,7 +139,7 @@ func Test_GetString(t *testing.T) {
 	tacl := testingACL{t: t}
 	var c Configuration
 	s := ConfigSource{
-		Type: Env,
+		Type: SourceTypeEnv,
 	}
 	c = c.AddConfigSource(s)
 	assert.Equal(tacl, len(c.sources), 1)
@@ -158,7 +158,7 @@ func Test_GetStringOrDefault(t *testing.T) {
 	tacl := testingACL{t: t}
 	var c Configuration
 	s := ConfigSource{
-		Type: Env,
+		Type: SourceTypeEnv,
 	}
 	c = c.AddConfigSource(s)
 	assert.Equal(tacl, len(c.sources), 1)
@@ -175,7 +175,7 @@ func Test_GetFloat(t *testing.T) {
 	tacl := testingACL{t: t}
 	var c Configuration
 	s := ConfigSource{
-		Type: Env,
+		Type: SourceTypeEnv,
 	}
 	c = c.AddConfigSource(s)
 	assert.Equal(tacl, len(c.sources), 1)
@@ -194,7 +194,7 @@ func Test_GetFloatOrDefault(t *testing.T) {
 	tacl := testingACL{t: t}
 	var c Configuration
 	s := ConfigSource{
-		Type: Env,
+		Type: SourceTypeEnv,
 	}
 	c = c.AddConfigSource(s)
 	assert.Equal(tacl, len(c.sources), 1)
@@ -212,7 +212,7 @@ func Test_GetBool(t *testing.T) {
 	tacl := testingACL{t: t}
 	var c Configuration
 	s := ConfigSource{
-		Type: Env,
+		Type: SourceTypeEnv,
 	}
 	c = c.AddConfigSource(s)
 	assert.Equal(tacl, len(c.sources), 1)
@@ -231,7 +231,7 @@ func Test_GetBoolOrDefault(t *testing.T) {
 	tacl := testingACL{t: t}
 	var c Configuration
 	s := ConfigSource{
-		Type: Env,
+		Type: SourceTypeEnv,
 	}
 	c = c.AddConfigSource(s)
 	assert.Equal(tacl, len(c.sources), 1)
@@ -252,7 +252,7 @@ func Test_GetIntArray(t *testing.T) {
 	tacl := testingACL{t: t}
 	var c Configuration
 	s := ConfigSource{
-		Type: Env,
+		Type: SourceTypeEnv,
 	}
 	c = c.AddConfigSource(s)
 	assert.Equal(tacl, len(c.sources), 1)
@@ -265,7 +265,7 @@ func Test_GetIntArray(t *testing.T) {
 	// JSON and Yaml array variables are interpreted as []interface{}
 	mockFile("{\"key1\":\"value1\", \"strarraykey\":[\"strval1\",\"strval2\"], \"intarraykey\":[321,654,987]}", nil)
 	s = ConfigSource{
-		Type:     JSON,
+		Type:     SourceTypeJSON,
 		FilePath: "testing.json",
 	}
 	c = c.AddConfigSource(s)
@@ -287,7 +287,7 @@ func Test_GetIntArrayOrDefault(t *testing.T) {
 	tacl := testingACL{t: t}
 	var c Configuration
 	s := ConfigSource{
-		Type: Env,
+		Type: SourceTypeEnv,
 	}
 	c = c.AddConfigSource(s)
 	assert.Equal(tacl, len(c.sources), 1)
@@ -302,7 +302,7 @@ func Test_GetIntArrayOrDefault(t *testing.T) {
 	// JSON and Yaml array variables are interpreted as []interface{}
 	mockFile("{\"key1\":\"value1\", \"strarraykey\":[\"strval1\",\"strval2\"], \"intarraykey\":[321,654,987]}", nil)
 	s = ConfigSource{
-		Type:     JSON,
+		Type:     SourceTypeJSON,
 		FilePath: "testing.json",
 	}
 	c = c.AddConfigSource(s)
@@ -321,7 +321,7 @@ func Test_GetStringArray(t *testing.T) {
 	tacl := testingACL{t: t}
 	var c Configuration
 	s := ConfigSource{
-		Type: Env,
+		Type: SourceTypeEnv,
 	}
 	c = c.AddConfigSource(s)
 	assert.Equal(tacl, len(c.sources), 1)
@@ -334,7 +334,7 @@ func Test_GetStringArray(t *testing.T) {
 	// JSON and Yaml array variables are interpreted as []interface{}
 	mockFile("{\"key1\":\"value1\", \"strarraykey\":[\"strval1_2\",\"strval2_2\"], \"intarraykey\":[123,456,789]}", nil)
 	s = ConfigSource{
-		Type:     JSON,
+		Type:     SourceTypeJSON,
 		FilePath: "testing.json",
 	}
 	c = c.AddConfigSource(s)
@@ -356,7 +356,7 @@ func Test_GetStringArrayOrDefault(t *testing.T) {
 	tacl := testingACL{t: t}
 	var c Configuration
 	s := ConfigSource{
-		Type: Env,
+		Type: SourceTypeEnv,
 	}
 	c = c.AddConfigSource(s)
 	assert.Equal(tacl, len(c.sources), 1)
@@ -371,7 +371,7 @@ func Test_GetStringArrayOrDefault(t *testing.T) {
 	// JSON and Yaml array variables are interpreted as []interface{}
 	mockFile("{\"key1\":\"value1\", \"strarraykey\":[\"strval1_2\",\"strval2_2\"], \"intarraykey\":[123,456,789]}", nil)
 	s = ConfigSource{
-		Type:     JSON,
+		Type:     SourceTypeJSON,
 		FilePath: "testing.json",
 	}
 	c = c.AddConfigSource(s)
@@ -390,7 +390,7 @@ func Test_GetFloatArray(t *testing.T) {
 	tacl := testingACL{t: t}
 	var c Configuration
 	s := ConfigSource{
-		Type: Env,
+		Type: SourceTypeEnv,
 	}
 	c = c.AddConfigSource(s)
 	assert.Equal(tacl, len(c.sources), 1)
@@ -403,7 +403,7 @@ func Test_GetFloatArray(t *testing.T) {
 	// JSON and Yaml array variables are interpreted as []interface{}
 	mockFile("{\"key1\":\"value1\", \"strarraykey\":[\"strval1\",\"strval2\"], \"fltarraykey\":[123.12,456.45,789.78]}", nil)
 	s = ConfigSource{
-		Type:     JSON,
+		Type:     SourceTypeJSON,
 		FilePath: "testing.json",
 	}
 	c = c.AddConfigSource(s)
@@ -425,7 +425,7 @@ func Test_GetFloatArrayOrDefault(t *testing.T) {
 	tacl := testingACL{t: t}
 	var c Configuration
 	s := ConfigSource{
-		Type: Env,
+		Type: SourceTypeEnv,
 	}
 	c = c.AddConfigSource(s)
 	assert.Equal(tacl, len(c.sources), 1)
@@ -440,7 +440,7 @@ func Test_GetFloatArrayOrDefault(t *testing.T) {
 	// JSON and Yaml array variables are interpreted as []interface{}
 	mockFile("{\"key1\":\"value1\", \"strarraykey\":[\"strval1\",\"strval2\"], \"fltarraykey\":[123.12,456.45,789.78]}", nil)
 	s = ConfigSource{
-		Type:     JSON,
+		Type:     SourceTypeJSON,
 		FilePath: "testing.json",
 	}
 	c = c.AddConfigSource(s)
