@@ -4,12 +4,12 @@ package gonfig
 type SourceType string
 
 const (
-	// Env sourcetype is used for reading from environment settings
-	Env SourceType = "env"
-	// JSON sourcetype is used for reading from JSON formatted files
-	JSON = "json"
-	// Yaml sourcetype is used for reading from yaml formatted files
-	Yaml = "yaml"
+	// SourceTypeEnv is used for reading from environment settings
+	SourceTypeEnv SourceType = "env"
+	// SourceTypeJSON is used for reading from JSON formatted files
+	SourceTypeJSON = "json"
+	// SourceTypeYaml is used for reading from yaml formatted files
+	SourceTypeYaml = "yaml"
 )
 
 // ConfigSource is the type that is used to describe various config sources.
